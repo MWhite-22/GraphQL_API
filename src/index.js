@@ -1,38 +1,35 @@
 const { GraphQLServer } = require('graphql-yoga');
+const { prisma } = require('./generated/prisma-client');
 
 // ========================================
-// 		Define the method of resolving querys
+// 			Define Resolvers
 // ========================================
+const Query = require('./resolvers/Query');
+const Mutation = require('./resolvers/Mutation');
+const Link = require('./resolvers/Link');
+const User = require('./resolvers/User');
+
 const resolvers = {
-	Query: {
-		info: ()=> 'This is the API of a Hackernews Clone',
-		feed: (root, args, context, info)=>{
-			return context.prisma.links()
-			}	
-	},
-
-	Mutation: {
-		post: (root, args, context)=>{
-			return context.prisma.createLink({
-				url: args.url,
-				description: args.description
-			})
-		}
-	},
-
-	Link: {
-		id: 		(parent) => parent.id,
-		url: 		(parent) => parent.url,
-		description:(parent) => parent.description
-	}
+	Query,
+	Mutation,
+	Link,
+	User
 }
 
 // ========================================
-// 			Run Server and GraphQL IDE
+// 		Run Server and GraphQL IDE
 // ========================================
 const server = new GraphQLServer({
 	typeDefs: `./src/schema.graphql`,
 	resolvers,
+	// Adds any HTTP request into the 'Context' object for use in the resolvers or other server functions
+	// Also adds any Prisma defined functions and commands into the same 'Context' object
+	context: request=>{
+		return{
+			...request,
+			prisma 
+		}
+	}
 })
 
 server.start(()=>console.log(`Server is running on http://localhost:4000`));

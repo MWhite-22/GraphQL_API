@@ -1,17 +1,61 @@
+
+# Defining the types of commands that can be run from the client side against out database
+
+# ! denotes NOT NULL items. For example: 
+# Query=>Info can never return a NULL string. If it tried, the server would throw an Error
+# Mutation=>Login must always have two arguments as inputs, email of type:String and password also of type:String. Anything else and we throw an Error
+# Mutation=>Login does NOT have to return an AuthPayload. We might return null if the login attempt fails
+# Link=>createdBy should an object of type:User. Due to the nature of how we create connections/relationships, we created a Link with no createdBy object first. 
+# 	- Then, after creating the type:Link, we find the type:User that created the Link
+# 	- Once we find the type:User, we insert the User object into the Link=>createdBy field
+# 		- This process leaves the createdBy field temporarily NULL, and therefore must be left without an !
+# User=>links is an array of type:Link objects. As such, we want neither the array itself to be NULL, nor the objects inside the array to have NULL values. 
+
+# What queries can be run, and their respective call names (feed returns an array of all type:Link items)
 type Query {
 	info: String!
 	feed: [Link!]!
 	link(id: ID!): Link
 }
 
+# What mutations (Create, Update, Delete) can be run from the client side
 type Mutation {
 	post(url: String!, description: String!): Link!
-	updateLink(id: ID!, url: String!, description: String!): Link
-	deleteLink(id: ID!): Link
+	signup(email: String!, password: String!, name: String!): AuthPayload
+	login(email: String!, password: String!): AuthPayload
 }
 
+# What data streams can be opened
+type Subscription{
+	newLink: Link
+}
+
+# Custom defined type used in our authentication queries/mutations
+# Expected returns are a JSON Web Token and a User object
+type AuthPayload {
+	token: String
+	user: User
+}
+
+# Custom defined type that emulates our database schema's Link type
+# Should match the datamodel.prisma file for all fields we wish to be able to query and show on a client side
 type Link {
 	id: ID!
 	description: String!
 	url: String!
+	createdAt: String!
+	createdBy: User
+}
+
+# Again, should match the custom defined User type from the database schema (datamodel.prisma)
+# !!!IMPORTANT!!!
+# We almost emulate the database schema, except for one very important line: PASSWORD
+# As this file dictates how the client can interact with the database, we DO NOT want to have to possibility of returning the password string
+# All password related activities (Create, Read, Update) will be completed on the server side and encrypted/obfuscated via bcrypt and JSON Web Tokens
+# Omitting the password field here prohibits the string, either unencrypted or encrypted, from every making it to the front end
+type User {
+	id: ID!
+	name: String!
+	email: String!
+	links: [Link!]!
 }

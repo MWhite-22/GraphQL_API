@@ -9,3 +9,7 @@ generate:
   - generator: javascript-client
     output: ../src/generated/prisma-client
 
+#Autorun Prisma Generate after deploying
+hooks: 
+  post-deploy:
+    - prisma generate
