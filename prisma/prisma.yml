@@ -1,0 +1,11 @@
+# Prisma Endpoint
+endpoint: https://us1.prisma.sh/mjw2291-3f6b6b/GraphQL_API/dev
+
+# Datamodel Location
+datamodel: datamodel.prisma
+
+# Specific Language and Location info for Prisma Client
+generate:
+  - generator: javascript-client
+    output: ../src/generated/prisma-client
+
