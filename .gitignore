@@ -1,2 +1,8 @@
+# Ignore Dependencies
 node_modules/
+
+#Ignore Lock File
 *lock.json
+
+# Ignore Functionally Generated Files
+src/generated/*
