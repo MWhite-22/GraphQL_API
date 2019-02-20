@@ -29,6 +29,7 @@ type Mutation {
 # What data streams can be opened
 type Subscription{
 	newLink: Link
+	newVote: Vote
 }
 
 # Custom defined type used in our authentication queries/mutations
