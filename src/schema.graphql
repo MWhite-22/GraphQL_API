@@ -14,7 +14,7 @@
 # What queries can be run, and their respective call names (feed returns an array of all type:Link items)
 type Query {
 	info: String!
-	feed: [Link!]!
+	feed(filter: String, skip: Int, first: Int, orderBy: LinkOrderByInput): [Link!]!
 	link(linkId: ID!): Link
 }
 
@@ -68,4 +68,15 @@ type User {
 	email: String!
 	links: [Link!]!
 	votes: [Vote!]!
+}
+
+enum LinkOrderByInput {
+  url_ASC
+  url_DESC
+  description_ASC
+  description_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }

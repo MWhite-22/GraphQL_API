@@ -3,10 +3,23 @@ function info(){
 	return 'A simple HackerNews clone, made with GraphQL'
 }
 
-function feed(root, args, context, info) {
-	// Return an array of all Links using the Prisma defined .links() function
-	// We could expand this to pass in several arguments to decided the WHERE, ORDER, LIMIT, OFFSET, etc. of the returned array
-	return context.prisma.links()
+async function feed(root, args, context, info) {
+	// If the query came with filter arguments, build a where object that uses the filter arg as a search against description OR url
+	// If no filter argument, set where equal to an empty object
+	const where = args.filter ? {
+			OR: [
+				{description_contains: args.filter},
+				{url_contains: args.filter},
+			]
+		} : {}
+	// Use our where object to filter the returned links array
+	const links = await context.prisma.links({
+		where,
+		skip: args.skip,
+		first: args.first,
+		orderBy: args.orderBy
+	})
+	return links
 }
 
 function link(root, args, context, info){
