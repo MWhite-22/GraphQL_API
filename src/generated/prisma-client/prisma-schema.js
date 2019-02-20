@@ -1,5 +1,7 @@
 module.exports = {
-        typeDefs: /* GraphQL */ `type AggregateLink {
+        typeDefs: /* GraphQL */ `
+
+type AggregateLink {
   count: Int!
 }
 
