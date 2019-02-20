@@ -15,7 +15,7 @@
 type Query {
 	info: String!
 	feed: [Link!]!
-	link(id: ID!): Link
+	link(linkId: ID!): Link
 }
 
 # What mutations (Create, Update, Delete) can be run from the client side
@@ -23,6 +23,7 @@ type Mutation {
 	post(url: String!, description: String!): Link!
 	signup(email: String!, password: String!, name: String!): AuthPayload
 	login(email: String!, password: String!): AuthPayload
+	vote(linkId:ID!): Vote
 }
 
 # What data streams can be opened
@@ -45,6 +46,13 @@ type Link {
 	url: String!
 	createdAt: String!
 	createdBy: User
+	votes: [Vote!]!
+}
+
+type Vote {
+	id: ID!
+	link: Link!
+	user: User!
 }
 
 # Again, should match the custom defined User type from the database schema (datamodel.prisma)
@@ -58,4 +66,5 @@ type User {
 	name: String!
 	email: String!
 	links: [Link!]!
+	votes: [Vote!]!
 }
