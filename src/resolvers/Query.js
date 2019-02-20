@@ -10,8 +10,8 @@ function feed(root, args, context, info) {
 }
 
 function link(root, args, context, info){
-	// Create a variable fro the args.id input
-	const linkId = args.id;
+	// Create a variable fro the args.linkId input
+	const linkId = args.linkId;
 	// Find the single link where the id = our linkId variable
 	// To find one, we must filter (WHERE) by a @unique value as defined in the schema.graphql
 	return context.prisma.link({id: linkId});
