@@ -14,7 +14,7 @@
 # What queries can be run, and their respective call names (feed returns an array of all type:Link items)
 type Query {
 	info: String!
-	feed(filter: String, skip: Int, first: Int, orderBy: LinkOrderByInput): [Link!]!
+	feed(filter: String, skip: Int, first: Int, orderBy: LinkOrderByInput): Feed!
 	link(linkId: ID!): Link
 }
 
@@ -27,7 +27,7 @@ type Mutation {
 }
 
 # What data streams can be opened
-type Subscription{
+type Subscription {
 	newLink: Link
 	newVote: Vote
 }
@@ -50,12 +50,6 @@ type Link {
 	votes: [Vote!]!
 }
 
-type Vote {
-	id: ID!
-	link: Link!
-	user: User!
-}
-
 # Again, should match the custom defined User type from the database schema (datamodel.prisma)
 # !!!IMPORTANT!!!
 # We almost emulate the database schema, except for one very important line: PASSWORD
@@ -68,6 +62,17 @@ type User {
 	email: String!
 	links: [Link!]!
 	votes: [Vote!]!
+}
+
+type Vote {
+	id: ID!
+	link: Link!
+	user: User!
+}
+
+type Feed {
+	links: [Link!]!
+	count: Int!
 }
 
 enum LinkOrderByInput {
