@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test_server": "nodemon src/index.js"
+    "server": "nodemon src/index.js"
   },
   "author": "",
   "license": "ISC",
