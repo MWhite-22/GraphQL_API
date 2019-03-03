@@ -4,16 +4,16 @@ import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 
 const FEED_QUERY = gql`
-  {
-    feed {
-      links {
-        id
-        createdAt
-        url
-        description
-      }
-    }
-  }
+	{
+		feed {
+			links {
+				id
+				createdAt
+				url
+				description
+			}
+		}
+	}
 `
 
 class LinkList extends Component {
@@ -23,16 +23,18 @@ class LinkList extends Component {
 				{({ loading, error, data }) => {
 					if (loading) return <div>Loading</div>
 					if (error) return <div>Error</div>
-				
+
 					const linksToRender = data.feed.links
-				
+
 					return (
 						<div className='linkList'>
-							{linksToRender.map(link => <Link key={link.id} link={link} />)}
+							{linksToRender.map(link => (
+								<Link key={link.id} link={link} />
+							))}
 						</div>
 					)
 				}}
-		  	</Query>
+			</Query>
 		)
 	}
 }
