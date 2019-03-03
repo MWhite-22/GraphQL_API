@@ -1,0 +1,13 @@
+{
+  "schemaPath": "./src/schema.graphql",
+  "extensions": {
+    "endpoints": {
+      "prod": {
+        "url": "http://localhost:4000",
+        "subscription": {
+          "url": "wss://subscriptions.graph.cool/v1/instagram"
+        }
+      }
+    }
+  }
+}
