@@ -1,15 +1,14 @@
-
 # Defining the types of commands that can be run from the client side against out database
 
-# ! denotes NOT NULL items. For example: 
+# ! denotes NOT NULL items. For example:
 # Query=>Info can never return a NULL string. If it tried, the server would throw an Error
 # Mutation=>Login must always have two arguments as inputs, email of type:String and password also of type:String. Anything else and we throw an Error
 # Mutation=>Login does NOT have to return an AuthPayload. We might return null if the login attempt fails
-# Link=>createdBy should an object of type:User. Due to the nature of how we create connections/relationships, we created a Link with no createdBy object first. 
+# Link=>createdBy should an object of type:User. Due to the nature of how we create connections/relationships, we created a Link with no createdBy object first.
 # 	- Then, after creating the type:Link, we find the type:User that created the Link
 # 	- Once we find the type:User, we insert the User object into the Link=>createdBy field
 # 		- This process leaves the createdBy field temporarily NULL, and therefore must be left without an !
-# User=>links is an array of type:Link objects. As such, we want neither the array itself to be NULL, nor the objects inside the array to have NULL values. 
+# User=>links is an array of type:Link objects. As such, we want neither the array itself to be NULL, nor the objects inside the array to have NULL values.
 
 # What queries can be run, and their respective call names (feed returns an array of all type:Link items)
 type Query {
@@ -23,7 +22,7 @@ type Mutation {
 	post(url: String!, description: String!): Link!
 	signup(email: String!, password: String!, name: String!): AuthPayload
 	login(email: String!, password: String!): AuthPayload
-	vote(linkId:ID!): Vote
+	vote(linkId: ID!): Vote
 }
 
 # What data streams can be opened
@@ -76,12 +75,12 @@ type Feed {
 }
 
 enum LinkOrderByInput {
-  url_ASC
-  url_DESC
-  description_ASC
-  description_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
+	url_ASC
+	url_DESC
+	description_ASC
+	description_DESC
+	createdAt_ASC
+	createdAt_DESC
+	updatedAt_ASC
+	updatedAt_DESC
 }
