@@ -1,5 +1,6 @@
 const { GraphQLServer } = require('graphql-yoga')
 const { prisma } = require('./generated/prisma-client')
+const morgan = require('morgan')
 
 // ========================================
 // Define Resolvers
@@ -35,5 +36,15 @@ const server = new GraphQLServer({
 	})
 })
 
-// eslint-disable-next-line no-console
-server.start(() => console.log('Server is running on http://localhost:4000'))
+server.express.use(morgan('tiny'))
+
+const options = {
+	port: 4000,
+	endpoint: '/graphql',
+	subscriptions: '/subscriptions',
+	playground: '/playground'
+}
+
+server.start(options, ({ port }) =>
+	console.log(`Server started, listening on port ${port} for incoming requests.`)
+)
